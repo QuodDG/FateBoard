@@ -1,4 +1,5 @@
-const cardsDir = '/cards/';
+const base = '/FateBoard/';
+const cardsDir = 'cards/';
 const cover = 'Cover';
 const prefix = 'card-';
 const ext = '.png';
@@ -496,11 +497,11 @@ function getIndexCard(collection, card) {
 }
 
 function parseCard2Url(card_name) {
-    return `${location.origin}/${cardsDir}${prefix}${card_name}${ext}`;
+    return `${location.origin}${base}${cardsDir}${prefix}${card_name}${ext}`;
 }
 
 function getCoverUrl() {
-    return `${location.origin}/${cardsDir}${prefix}${cover}${ext}`;
+    return `${location.origin}${base}${cardsDir}${prefix}${cover}${ext}`;
 }
 
 function getFateClassName(card_name) {
