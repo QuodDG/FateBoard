@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FateBoard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/fontawesome-free-5.13.0-web/css/all.min.css" type="text/css" rel="stylesheet" media="screen">
+        <link href="css/animista.css" type="text/css" rel="stylesheet" media="screen">
+        <link href="css/estilo.css" type="text/css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <div class="l__game-controls">
+            <button type="button" class="c__btn" id="i__change-player">Mudar Jogador</button>
+        </div>
+        <div class="l__current-player-panel">
+            <p>Mana: <span id="i__current-player-sp">0</span></p>
+            <button type="button" class="c__btn c__btn-danger" id="i__reduce-sp"><i class="fas fa-minus-circle"></i></button>
+        </div>
+        <div class="l__wrapper" id="i__wrapper">
+            <div class="l__container-player l__board-player-2" id="i__board-player-2">
+                <h1 class="c__board-title">Jogador 2</h1>
+                <div class="l__box-cards"></div>
+            </div>
+            <div class="l__container-player l__board-player-1" id="i__board-player-1">
+                <h1 class="c__board-title">Jogador 1</h1>
+                <div class="l__box-cards"></div>
+            </div>
+        </div>
+        <div class="l__hand" id="i__hand">
+            <div class="l__box-cards"></div>
+        </div>
+        <script src="js/extends.js" type="text/javascript"></script>
+        <script src="js/init.js" type="text/javascript"></script>
+    </body>
+</html>

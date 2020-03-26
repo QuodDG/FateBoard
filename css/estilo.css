@@ -1,0 +1,230 @@
+html{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: sans-serif;
+    background: url('../images/dark-honeycomb.png') #000;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+p{
+    margin: 2px 0 5px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+button:focus{
+    outline: none;
+}
+
+.l__wrapper{
+    display: inline-block;
+    width: 100vw;
+    height: 100vh;
+    transition-duration: .5s;
+    padding: 0;
+    margin: 0;
+}
+
+.l__container-player{
+    display: inline-block;
+    width: calc(100vw - 8px - 2vw);
+    height: calc(50vh - 8px - 2vh);
+    border: transparent dotted 4px;
+    margin: 1vh 1vw;
+}
+
+.c__board-title{
+    display: block;
+    position: absolute;
+    font-size: 1em;
+    opacity: 0.5;
+    text-align: center;
+    margin: 0;
+}
+
+.m__board-active{
+    border: red dotted 4px;
+}
+
+.l__board-player-1{
+    background: #777;
+}
+
+.l__board-player-2{
+    transform: rotate(180deg);
+    background: #333;
+}
+
+.l__box-cards{
+    display: flex;
+    width: 100%;
+    height: calc(100% - 20px);
+    justify-content: center;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.l__card{
+    display: table;
+    position: relative;
+    width: calc(100vw / 7 - 30px);
+    height: auto;
+    float: left;
+    transition-duration: .5s;
+    border-radius: 6px;
+}
+
+.l__card_controls{
+    display: none;
+    position: absolute;
+    opacity: 0.5;
+    margin: 0 0 0 0;
+}
+
+.l__card:hover .l__card_controls{
+    display: block;
+    z-index: 999;
+}
+
+.c__card_cover{
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    transition-duration: .5s;
+}
+
+.c__card-attr{
+    display: block;
+	width: calc(100% / 3);
+    line-height: 1em;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 3px 0;
+    margin: calc(-1em - 10px) 0 0 0;
+    opacity: 0.5;
+    background: #FFF;
+    color: #333;
+	float: left;
+    border-radius: 0;
+	text-align: center;
+}
+
+.c__card-attr-atk{
+	margin-left: 0;
+}
+
+.c__card-attr-life{
+	margin-left: calc(100% / 3);
+}
+
+.c__card-attr-shield{
+	margin-left: calc(100% / 3 * 2);
+}
+
+.l__card:hover .c__card_cover{
+    /*transform: translateY(5px);*/
+}
+
+.m__inactive-card{
+    filter: grayscale(100%);
+}
+
+.l__hand{
+    display: inline-block;
+    position: absolute;
+    left: calc(-96vw / 7 * 4);
+    bottom: -45vh;
+    width: calc(100vw / 7 * 4);
+    height: 50vh;
+    background: url('../images/what-the-hex-dark.png');
+    box-shadow: 0 0 20px -5px #000;
+    border-radius: 0 30px 0 0;
+    padding: 0;
+    margin: 0;
+}
+
+.l__hand:hover{
+    left: 0;
+    bottom: 0;
+}
+
+.c__btn{
+    display: table;
+    border: none;
+    border-radius: 6px;
+    padding: 2px 5px;
+    cursor: pointer;
+    background: #333;
+    color: #FFF;
+    margin: 3px;
+    float: left;
+    border: #FFF solid 1px;
+    transition-duration: .5s;
+}
+
+.c__btn:hover{
+    transform: scale(1.2);
+}
+
+.c__btn-success{
+    background: darkgreen;
+    color: #FFF;
+}
+
+.c__btn-danger{
+    background: red;
+    color: #FFF;
+}
+
+.l__game-controls,
+.l__current-player-panel{
+    display: table;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    background: #000;
+    color: #FFF;
+    opacity: 0.5;
+    border-radius: 0 0 0 6px;
+}
+
+.l__game-controls{
+    left: 0;
+    right: auto;
+    border-radius: 0 0 6px 0;
+}
+
+.c__zoom-card{
+    display: table;
+    position: absolute;
+    height: 70vh;
+    top: calc(50% - 35vh);
+    left: 0;
+    border-radius: 6px;
+    background: #FFF;
+}
+
+.c__zoom-card_btn-close{
+    position: absolute;
+    z-index: 9999;
+    opacity: 0.5;
+}
+
+.c__zoom-card_image{
+    position: absolute;
+    display: block;
+    width: auto;
+    height: 100%;
+    border-radius: 6px;
+    box-shadow: 0 0 20px -10px #000;
+}
