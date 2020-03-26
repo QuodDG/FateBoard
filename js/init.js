@@ -1,4 +1,4 @@
-const base = '/FateBoard/';
+const base = '/';
 const cardsDir = 'cards/';
 const cover = 'Cover';
 const prefix = 'card-';
@@ -291,6 +291,7 @@ function initGame() {
 
 function initPlayers() {
     player1 = {
+        name: 'Jogador 1',
         board: document.getElementById('i__board-player-1'),
         field: [],
         hand: [],
@@ -298,6 +299,7 @@ function initPlayers() {
         cardsRecallInTurn: 0
     };
     player2 = {
+        name: 'Jogador 2',
         board: document.getElementById('i__board-player-2'),
         field: [],
         hand: [],
@@ -349,12 +351,14 @@ function activeCurrentPlayer() {
 function verifyLose() {
     let deads = 0;
     currentPlayer.field.forEach(function (card) {
-        if (card.attr.current_life !== undefined ||
+        if (card.attr.current_life !== undefined && 
                 card.attr.current_life === 0) {
             deads++;
         }
     });
+    console.log(`Player: ${currentPlayer.name}\nTurn: ${turn}\nDeads: ${deads}`);
     if (deads === maxAmountCardsInField) {
+        console.log(`InField: ${maxAmountCardsInField}`);
         let playerWin = turn % 2 === 0 ? 'Jogador 1' : 'Jogador 2';
         alert(`O ${playerWin} ganhou o jogo!`);
         location.reload();
