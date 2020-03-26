@@ -264,6 +264,8 @@ const cards = [
 const maxAmountCardsInHand = 3;
 const maxAmountCardsRecallsInTurn = 2;
 const maxAmountCardsInField = 7;
+const manaPerTurn = 2;
+const costPerCall = 1;
 const wrapper = document.getElementById('i__wrapper');
 const currentHand = document.getElementById('i__hand');
 const btnChangePlayer = document.getElementById('i__change-player');
@@ -280,29 +282,29 @@ listenerBoard();
 initGame();
 
 function initGame() {
-	deck = cards;
-	turn = 0;
-	initPlayers();
+    deck = cards;
+    turn = 0;
+    initPlayers();
     shuffle();
     initTurn();
 }
 
-function initPlayers(){
-	player1 = {
-		board: document.getElementById('i__board-player-1'),
-		field: [],
-		hand: [],
-		sp: 0,
-		cardsRecallInTurn: 0
-	};
-	player2 = {
-		board: document.getElementById('i__board-player-2'),
-		field: [],
-		hand: [],
-		sp: 0,
-		cardsRecallInTurn: 0
-	};
-	currentPlayer = undefined;
+function initPlayers() {
+    player1 = {
+        board: document.getElementById('i__board-player-1'),
+        field: [],
+        hand: [],
+        sp: 0,
+        cardsRecallInTurn: 0
+    };
+    player2 = {
+        board: document.getElementById('i__board-player-2'),
+        field: [],
+        hand: [],
+        sp: 0,
+        cardsRecallInTurn: 0
+    };
+    currentPlayer = undefined;
 }
 
 function initTurn() {
@@ -316,15 +318,18 @@ function initTurn() {
         player2 = currentPlayer;
         currentPlayer = player1;
     }
-	verifyLose();
+    verifyLose();
     if (turn < 3 && !currentPlayer.hand.length) {
         buyInitialHand(3);
     }
     if (turn > 2) {
         buyCard();
     }
-	currentPlayer.cardsRecallInTurn = 0;
-    currentPlayer.sp++;
+    if(turn === 1){
+        currentPlayer.sp--;
+    }
+    currentPlayer.cardsRecallInTurn = 0;
+    currentPlayer.sp += manaPerTurn;
     renderSP();
     renderHand();
     activeCurrentPlayer();
@@ -341,19 +346,19 @@ function activeCurrentPlayer() {
     currentPlayer.board.className += ' m__board-active';
 }
 
-function verifyLose(){
-	let deads = 0;
-	currentPlayer.field.forEach(function(card){
-		if(card.attr.current_life !== undefined || 
-			card.attr.current_life === 0){
-				deads++;
-			}
-	});
-	if(deads === maxAmountCardsInField){
-		let playerWin = turn % 2 === 0 ? 'Jogador 1' : 'Jogador 2';
-		alert(`O ${playerWin} ganhou o jogo!`);
-		location.reload();
-	}
+function verifyLose() {
+    let deads = 0;
+    currentPlayer.field.forEach(function (card) {
+        if (card.attr.current_life !== undefined ||
+                card.attr.current_life === 0) {
+            deads++;
+        }
+    });
+    if (deads === maxAmountCardsInField) {
+        let playerWin = turn % 2 === 0 ? 'Jogador 1' : 'Jogador 2';
+        alert(`O ${playerWin} ganhou o jogo!`);
+        location.reload();
+    }
 }
 
 function renderSP() {
@@ -402,23 +407,23 @@ function buyCard() {
 }
 
 function recallCard(card) {
-	if(turn < 3){
-		alert('Você não pode dar Recall no seu primeiro Turno');
-		return;
-	}
-	if((currentPlayer.field.length < 6 && currentPlayer.cardsRecallInTurn === maxAmountCardsRecallsInTurn)){
-		alert(`Você atingiu o máximo de ${maxAmountCardsRecallsInTurn} Recalls neste Turno`);
-		return;
-	}
-	if(currentPlayer.field.length === maxAmountCardsInField){
-		alert(`Você não pode mais fazer Recall porque já completou sua Facção de Servos`);
-		return;
-	}
+    if (turn < 3) {
+        alert('Você não pode dar Recall no seu primeiro Turno');
+        return;
+    }
+    if ((currentPlayer.field.length < 6 && currentPlayer.cardsRecallInTurn === maxAmountCardsRecallsInTurn)) {
+        alert(`Você atingiu o máximo de ${maxAmountCardsRecallsInTurn} Recalls neste Turno`);
+        return;
+    }
+    if (currentPlayer.field.length === maxAmountCardsInField) {
+        alert(`Você não pode mais fazer Recall porque já completou sua Facção de Servos`);
+        return;
+    }
     let index_card = getIndexCard(currentPlayer.hand, card);
     deck.push(currentPlayer.hand[index_card]);
     currentPlayer.hand.splice(index_card, 1);
     //shuffle();
-	currentPlayer.cardsRecallInTurn++;
+    currentPlayer.cardsRecallInTurn++;
     buyCard();
     renderHand();
 }
@@ -428,11 +433,11 @@ function convoke(card) {
         alert('Você não tem Mana para Convocar');
         return;
     }
-	
-	if(currentPlayer.field.length === maxAmountCardsInField){
-		alert('Você atingiu o limite máximo de Servos no Campo');
+
+    if (currentPlayer.field.length === maxAmountCardsInField) {
+        alert('Você atingiu o limite máximo de Servos no Campo');
         return;
-	}
+    }
 
     currentPlayer.hand.forEach(function (card_obj, index) {
         if (card_obj.name === card.cname) {
@@ -440,7 +445,7 @@ function convoke(card) {
                 alert('Você não pode ter mais de um Herói da mesma classe no campo');
                 return;
             }
-            currentPlayer.sp--;
+            currentPlayer.sp -= costPerCall;
             renderSP(currentPlayer.sp);
             currentPlayer.hand.splice(index, 1);
             currentPlayer.field.push(card_obj);
@@ -509,8 +514,8 @@ function getFateClassName(card_name) {
     return card_name.replace(/(\d|\.)/g, '').toLowerCase();
 }
 
-function format_number_10(number){
-	return number.toString().length === 1 ? `0${number}` : number;
+function format_number_10(number) {
+    return number.toString().length === 1 ? `0${number}` : number;
 }
 
 /* COMPONENTS */
@@ -520,17 +525,17 @@ function c__card(card_obj, alt, hide_add, hide_remove, hide_life) {
     let card_controls = c__card_controls(hide_add, hide_remove, hide_life);
     let card_image = c__card_image(alt);
     let life = document.createElement('p');
-	let atk = document.createElement('p');
-	let def = document.createElement('p');
+    let atk = document.createElement('p');
+    let def = document.createElement('p');
     let current_life = card_obj.attr.current_life !== undefined ? card_obj.attr.current_life : card_obj.attr.life;
 
-	atk.innerHTML = format_number_10(card_obj.attr.atk);
+    atk.innerHTML = format_number_10(card_obj.attr.atk);
     atk.className = 'c__card-attr c__card-attr-atk';
-	life.innerHTML = format_number_10(current_life);
+    life.innerHTML = format_number_10(current_life);
     life.className = 'c__card-attr c__btn-danger c__card-attr-life';
-	def.innerHTML = format_number_10(card_obj.attr.shield);
+    def.innerHTML = format_number_10(card_obj.attr.shield);
     def.className = 'c__card-attr c__card-attr-shield';
-	
+
     card.cname = card_obj.name;
     card.fateClass = getFateClassName(card_obj.name);
     card.imageCover = card_image.src;
@@ -538,9 +543,9 @@ function c__card(card_obj, alt, hide_add, hide_remove, hide_life) {
     card.className = 'l__card';
     card.appendChild(card_controls);
     card.appendChild(card_image);
-	card.appendChild(atk);
-	card.appendChild(life);
-	card.appendChild(def);
+    card.appendChild(atk);
+    card.appendChild(life);
+    card.appendChild(def);
 
     listener_actions_card(card);
 
