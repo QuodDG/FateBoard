@@ -1,4 +1,4 @@
-const base = '/';
+const base = '/FateBoard/';
 const cardsDir = 'cards/';
 const cover = 'Cover';
 const prefix = 'card-';
